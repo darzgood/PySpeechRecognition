@@ -20,7 +20,9 @@ def recognize_speech_from_mic(recognizer, microphone):
         raise TypeError("'microphone' must be 'Microphone' instance")
     
     with microphone as source:
+        print("A moment of silence please...")
         recognizer.adjust_for_ambient_noise(source)
+        print("Okay, begin talking.")
         audio = recognizer.listen(source)
         
     response = {"success":True, "error":None, "transcription":None}
@@ -37,8 +39,11 @@ def recognize_speech_from_mic(recognizer, microphone):
     
 if __name__ == "__main__":
     
-    r = speech_recognition.Recognizer()
-    m = speech_recognition.Microphone()
+    r = sr.Recognizer()
+    m = sr.Microphone()
     
-    recognize_speech_from_mic(r, m)
-    
+    response = recognize_speech_from_mic(r, m)
+    if response["error"] == None:
+        print(response["transcription"])
+    else:
+        print(response["error"])
